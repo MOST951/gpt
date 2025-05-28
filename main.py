@@ -78,7 +78,7 @@ def main():
     if 'data_memory' not in st.session_state:
         st.session_state.data_memory = None
     if 'data_df' not in st.session_state:
-        st.session_state.data_df = None
+        st.session_state.data_df = None  # 确保 data_df 初始化为 None
 
     # 页面标题
     st.markdown("""

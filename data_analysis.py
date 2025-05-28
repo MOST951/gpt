@@ -8,7 +8,8 @@ def render_data_analysis():
     """渲染数据分析模块"""
     st.header("📊 智能数据分析")
 
-    if "df" not in st.session_state:
+    # 检查 st.session_state.data_df 是否存在且不为 None
+    if "data_df" not in st.session_state or st.session_state.data_df is None:
         st.info("请先在侧边栏上传数据文件")
         return
 
