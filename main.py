@@ -2,7 +2,8 @@ import streamlit as st
 from chat import render_chat, handle_chat_input, get_ai_response
 from document_qa import render_document_qa
 from data_analysis import render_data_analysis
-
+import pandas as pd
+from io import BytesIO
 
 def render_sidebar():
     """渲染侧边栏"""
@@ -35,19 +36,25 @@ def render_sidebar():
 
         # 文件上传
         st.subheader("数据管理")
-        uploaded_file = st.file_uploader(
-            "上传文件（支持CSV/Excel/TXT）",
-            type=["csv", "xlsx", "txt"],
-            help="根据当前模式自动处理文件类型"
-        )
-        # handle_uploaded_file(uploaded_file)
+        option = st.radio("请选择数据文件类型:", ("Excel", "CSV"))
+        file_type = "xlsx" if option == "Excel" else "csv"
+        data = st.file_uploader(f"上传你的{option}数据文件", type=file_type)
+        if data:
+            if file_type == "xlsx":
+                # 读取Excel文件的工作表名称
+                wb = pd.read_excel(data, engine='openpyxl', sheet_name=None)
+                sheet_names = wb.keys()
+                selected_sheet = st.radio("请选择要加载的工作表：", sheet_names)
+                st.session_state["df"] = pd.read_excel(data, sheet_name=selected_sheet)
+            else:
+                st.session_state["df"] = pd.read_csv(data)
+            with st.expander("原始数据"):
+                st.dataframe(st.session_state["df"].head(10), use_container_width=True)
 
         # 历史消息
         st.subheader("对话历史")
-        # render_history()
 
         if st.button("🗑️ 清空当前历史"):
-            # clear_current_history()
             pass
 
 

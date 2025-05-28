@@ -23,12 +23,12 @@ def get_ai_response(memory, user_prompt, system_prompt="", model_name='gpt-4o-mi
         AI响应
     """
     try:
-        if not st.session_state.API_KEY:
-            return "请先在侧边栏输入有效的API密钥"
+        if not st.secrets["API_KEY"]:
+            return "请先在 Streamlit Secrets 中配置有效的 API 密钥"
 
         model = ChatOpenAI(
             model=model_name,
-            api_key=st.secrets['API_KEY'],
+            api_key=st.secrets["API_KEY"],
             base_url='https://api.openai.com/v1',
             temperature=temperature,
             max_tokens=max_tokens
@@ -38,7 +38,7 @@ def get_ai_response(memory, user_prompt, system_prompt="", model_name='gpt-4o-mi
         response = chain.invoke({'input': full_prompt})['response']
         return response
     except Exception as e:
-        st.error(f"AI请求失败，请检查您的网络连接或API密钥配置。错误信息：{str(e)}")
+        st.error(f"AI请求失败，请检查您的网络连接。错误信息：{str(e)}")
         return "无法生成响应，请检查配置"
 
 
@@ -64,10 +64,6 @@ def handle_chat_input(prompt):
     Args:
         prompt: 用户输入的提示
     """
-    if not st.session_state.API_KEY:
-        st.warning("🔑 请先在侧边栏输入API密钥")
-        return
-
     # 添加用户消息
     st.session_state.chat_messages.append({'role': 'human', 'content': prompt})
 

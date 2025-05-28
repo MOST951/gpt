@@ -35,7 +35,7 @@ def render_document_qa():
 
                 model = ChatOpenAI(
                     model=st.session_state.selected_model,
-                    api_key=st.secrets['API_KEY'],
+                    api_key=st.secrets["API_KEY"],
                     base_url='https://api.openai.com/v1',
                     temperature=0.2
                 )

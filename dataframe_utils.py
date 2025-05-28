@@ -1,4 +1,6 @@
 import json
+from turtle import st
+
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent
@@ -45,10 +47,9 @@ def dataframe_agent(df, query):
     Returns:
         分析结果的字典
     """
-    load_dotenv()
     model = ChatOpenAI(
         model="deepseek-chat",
-        api_key='sk-8dca673d82b74bf59bac651337b7fba8',
+        api_key=st.secrets["API_KEY"],
         temperature=0
     )
     agent = create_pandas_dataframe_agent(
