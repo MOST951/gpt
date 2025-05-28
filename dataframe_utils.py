@@ -1,7 +1,5 @@
 import json
-from turtle import st
-
-from dotenv import load_dotenv
+import streamlit as st
 from langchain_openai import ChatOpenAI
 from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent
 
